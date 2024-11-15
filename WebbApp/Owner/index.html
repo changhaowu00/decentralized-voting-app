@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="icon" href="9JElec.png" type="image/png">
+    <title>Escrutinio de Votos - Elecciones al Parlamento Europeo</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #0D4DA4;
+        }
+        header {
+            background-image: url('banner.png');
+            background-size: cover;
+            background-position: center;
+            height: 280px;
+            width: 100%;
+        }
+        .bottom-banner {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .bottom-banner img {
+            max-width: 40%;
+            max-height: 40%;
+        }
+    </style>
+</head>
+<body>
+    <header></header>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 mt-5">
+                <div class="col-md-12 text-center mt-5" id="ttable">
+                    <h2>Escrutinio de las elecciones</h2>
+                    <table class="table" id="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre del partido</th>
+                                <th>Número de votos</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla">
+                            <tr>
+                                <td>1</td>
+                                <td>PSOE</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Vox</td>
+                                <td>1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn btn-success" onclick="update_table()">Actualizar votos</button>
+                <button class="btn btn-danger" onclick="finishVoting()">Finalizar votación</button>
+                <div id="names"></div>
+                <div id="votes"></div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-banner">
+        <img src="gob_spain.png" alt="Gobierno de España">
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Adding functionality to interact with smart contract -->
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    <script>
+        const mySet = new Set(["PP", "PSOE", "Vox", "Sumar", "Podemos", "Ciudadanos"]);
+        const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+        const MoodContractAddress = "0x5A2531632b5a0872E08D6773AAF8075e0e545f41";
+        const MoodContractABI = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "Message",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "_hexSignature",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "_hexModulus",
+                        "type": "string"
+                    }
+                ],
+                "name": "vote",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "getVotes",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "string[]"
+                    },
+                    {
+                        "name": "",
+                        "type": "int[]"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "finishVoting",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            }
+        ];
+        let MoodContract;
+        let signer;
+
+        provider.send("eth_requestAccounts", []).then(() => {
+            provider.listAccounts().then(function (accounts) {
+                signer = provider.getSigner(accounts[0]);
+                MoodContract = new ethers.Contract(
+                    MoodContractAddress,
+                    MoodContractABI,
+                    signer
+                );
+            });
+        });
+
+        function isValueNotInSet(value) {
+            if (!mySet.has(value)) {
+                return "Voto nulo";
+            }
+            return value;
+        }
+
+        async function update_table() {
+            let getMoodPromise = MoodContract.getVotes();
+            let Mood = await getMoodPromise;
+            console.log(Mood);
+            let names = Mood[0];
+            let votes = Mood[1];
+            var data = [];
+            for (var i = 0; i < names.length; i++) {
+                data.push({ "party": isValueNotInSet(names[i]), "votes": votes[i] });
+            }
+
+            data.sort(function (a, b) {
+                return b.votes - a.votes;
+            });
+
+            var tableBody = document.getElementById("tabla");
+            tableBody.innerHTML = "";
+
+            for (var i = 0; i < data.length; i++) {
+                var row = `<tr>
+                                <td>${i + 1}º</td>
+                                <td>${data[i].party}</td>
+                                <td>${data[i].votes}</td>
+                            </tr>`;
+                tableBody.innerHTML += row;
+            }
+        }
+
+        async function finishVoting() {
+            try {
+                await MoodContract.finishVoting();
+                alert("La votación ha finalizado.");
+            } catch (error) {
+                console.error("Error al finalizar la votación:", error);
+                alert("Hubo un error al finalizar la votación.");
+            }
+        }
+    </script>
+</body>
+</html>

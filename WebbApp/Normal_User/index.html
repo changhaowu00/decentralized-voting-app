@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="icon" href="9JElec.png" type="image/png">
+    <title>Voto Electrónico para las Elecciones al Parlamento Europeo</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #0D4DA4;
+        }
+        header {
+            background-image: url('banner.png');
+            background-size: cover;
+            background-position: center;
+            height: 280px;
+            width: 100%;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-container img {
+            width: 33%;
+            height: auto;
+            margin: 0 10px;
+        }
+
+        .party-buttons {
+            margin-bottom: 1rem;
+        }
+
+        .party-buttons button {
+            margin: 5px;
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 80%;
+            border: none;
+            width: 100px;
+            height: 100px;
+            text-indent: -9999px;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffe066;
+            border-color: #ffe066;
+        }
+
+        .btn-pp {
+            background-image: url('PP.png');
+        }
+
+        .btn-psoe {
+            background-image: url('PSOE.png');
+        }
+
+        .btn-vox {
+            background-image: url('Vox.png');
+        }
+
+        .btn-sumar {
+            background-image: url('Sumar.png');
+        }
+
+        .btn-podemos {
+            background-image: url('Podemos.png');
+        }
+
+        .btn-ciudadanos {
+            background-image: url('Ciudadanos.png');
+        }
+
+        .bottom-banner {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .bottom-banner img {
+            max-width: 40%;
+            max-height: 40%;
+        }
+    </style>
+</head>
+<body>
+    <header></header>
+    <div class="container">
+        <div class="row justify-context-center">
+            <div class="col-md-12 text-center">
+                <div class="logo-container">
+                    <img src="logovoto.png" alt="Logo Voto" class="img-fluid my-3" style="width: 40%; height: auto;">
+                    <img src="spain.svg" alt="Spain Logo" class="img-fluid my-3" style="width: 40%; height: auto;">
+                </div>
+                <h2>Elecciones Europeas en España</h2>
+                <p>¡Tu voto cuenta! Participa en las elecciones europeas y haz oír tu voz.</p>
+                <div class="party-buttons">
+                    <button class="btn btn-pp" onclick="setPartyName('PP')">PP</button>
+                    <button class="btn btn-psoe" onclick="setPartyName('PSOE')">PSOE</button>
+                    <button class="btn btn-vox" onclick="setPartyName('Vox')">Vox</button>
+                    <button class="btn btn-sumar" onclick="setPartyName('Sumar')">Sumar</button>
+                    <button class="btn btn-podemos" onclick="setPartyName('Podemos')">Podemos</button>
+                    <button class="btn btn-ciudadanos" onclick="setPartyName('Ciudadanos')">Ciudadanos</button>
+                </div>
+                <div class="form-group">
+                    <label for="message">Nombre partido:</label>
+                    <input type="text" class="form-control" id="message" name="message">
+                </div>
+                <div class="form-group">
+                    <label for="_hexSignature">Firma:</label>
+                    <input type="text" class="form-control" id="_hexSignature" name="_hexSignature">
+                </div>
+                <div class="form-group">
+                    <label for="_hexModulus">Módulo:</label>
+                    <input type="text" class="form-control" id="_hexModulus" name="_hexModulus">
+                </div>
+                <form id="voteForm" onsubmit="return validateForm()"></form>
+                <div>
+                    <input type="checkbox" id="privacyPolicy" name="privacyPolicy" required>
+                    <label for="privacyPolicy">Acepto la política de privacidad.</label>
+                    <label for="privacyPolicy">Autorizo el tratamiento de mis datos personales con fines no comerciales.</label>
+                </div>
+                <button class="btn btn-primary" onclick="sendVote()">Enviar voto</button>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-banner">
+        <img src="gob_spain.png" alt="Gobierno de España">
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!--Adding functionality to interact with smart contract - MoodDairy-->
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    <script>
+        const mySet = new Set(["PP", "PSOE", "Vox", "Sumar", "Podemos", "Ciudadanos"]);
+        const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+        const MoodContractAddress = "0x5A2531632b5a0872E08D6773AAF8075e0e545f41";
+        const MoodContractABI = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "Message",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "_hexSignature",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "_hexModulus",
+                        "type": "string"
+                    }
+                ],
+                "name": "vote",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "getVotes",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "string[]"
+                    },
+                    {
+                        "name": "",
+                        "type": "int[]"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+        let MoodContract;
+        let signer;
+
+        provider.send("eth_requestAccounts", []).then(() => {
+            provider.listAccounts().then(function (accounts) {
+                signer = provider.getSigner(accounts[0]);
+                MoodContract = new ethers.Contract(
+                    MoodContractAddress,
+                    MoodContractABI,
+                    signer
+                );
+            });
+        });
+
+        async function sendVote() {
+            var privacyPolicyCheckbox = document.getElementById('privacyPolicy');
+            if (!privacyPolicyCheckbox.checked) {
+                alert("Por favor, acepte la política de privacidad antes de enviar el formulario.");
+                return false;
+            }
+            var message = document.getElementById("message").value;
+            var _hexSignature = document.getElementById("_hexSignature").value;
+            var _hexModulus = document.getElementById("_hexModulus").value;
+            if (message=="" || _hexSignature == "" || _hexModulus == "") {
+                alert("Por favor, rellene todos los campos");
+                return false;
+            }
+            const setMoodPromise = MoodContract.vote(message, _hexSignature, _hexModulus);
+            await setMoodPromise;
+            alert('Voto enviado');
+        }
+
+        function setPartyName(partyName) {
+            document.getElementById("message").value = partyName;
+        }
+
+        function validateForm() {
+            const checkbox = document.getElementById('privacyPolicy');
+            if (!checkbox.checked) {
+                alert('Debes aceptar los términos de privacidad antes de enviar tu voto.');
+                return false; 
+            }
+            return true; 
+        }
+    </script>
+</body>
+</html>
