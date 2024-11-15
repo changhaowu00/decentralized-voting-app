@@ -1,0 +1,113 @@
+{
+	"compiler": {
+		"version": "0.8.25+commit.b61c2a91"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "finishVoting",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getVotes",
+				"outputs": [
+					{
+						"internalType": "string[]",
+						"name": "",
+						"type": "string[]"
+					},
+					{
+						"internalType": "int256[]",
+						"name": "",
+						"type": "int256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "Message",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_hexSignature",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_hexModulus",
+						"type": "string"
+					}
+				],
+				"name": "vote",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"vote_v2.sol": "ElectionVote"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"SolRsaVerify/src/RsaVerify.sol": {
+			"keccak256": "0x91994343ee6fbf259c37fdc68f3b89c236e535c2872a118c9bc05a8086510b64",
+			"license": "GPL-3.0-or-later",
+			"urls": [
+				"bzz-raw://2f5cc37e7e39e1de16c176cc4ed3e610ad7a8869ffa1d4820252b11e65a6ce19",
+				"dweb:/ipfs/QmUxwQDR1B6r6JrUKbkbxG7GLah1G1YwgvHbwmDdc9YhnL"
+			]
+		},
+		"vote_v2.sol": {
+			"keccak256": "0xca04e75cc49553ff320821947d53a7e50983498e2a2fe127724ca910030ab8c9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a089b7e2896e81ec2e5e4fac1cf6476e27c9da61d70b17fe07544dd043c69d02",
+				"dweb:/ipfs/QmdWKoaRZtZRMLN3qcN2swAgmF3R6CzRjwN6bBiqq9CwEt"
+			]
+		}
+	},
+	"version": 1
+}

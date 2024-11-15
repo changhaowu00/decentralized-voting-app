@@ -1,0 +1,125 @@
+{
+	"compiler": {
+		"version": "0.8.25+commit.b61c2a91"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "getVotes",
+				"outputs": [
+					{
+						"internalType": "string[]",
+						"name": "",
+						"type": "string[]"
+					},
+					{
+						"internalType": "int256[]",
+						"name": "",
+						"type": "int256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "Message",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_hexSignature",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_hexExponent",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_hexModulus",
+						"type": "string"
+					}
+				],
+				"name": "vote",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "Message",
+						"type": "string"
+					}
+				],
+				"name": "vote2",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"vote.sol": "MoodDairy"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"SolRsaVerify/src/RsaVerify.sol": {
+			"keccak256": "0x91994343ee6fbf259c37fdc68f3b89c236e535c2872a118c9bc05a8086510b64",
+			"license": "GPL-3.0-or-later",
+			"urls": [
+				"bzz-raw://2f5cc37e7e39e1de16c176cc4ed3e610ad7a8869ffa1d4820252b11e65a6ce19",
+				"dweb:/ipfs/QmUxwQDR1B6r6JrUKbkbxG7GLah1G1YwgvHbwmDdc9YhnL"
+			]
+		},
+		"vote.sol": {
+			"keccak256": "0xfa511e18e04ab87aafcb202c116fe1df6d6836b79a339d54c5ab252a21c49142",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://75511af1e042fd46220a9f9a63ef5fdc023afc9b4ae394dbc0a125f5dbf8f6ba",
+				"dweb:/ipfs/QmPopcV3eu1QhYjqZHiuTprYRLzjT5RhZAZcrNbsoxeJyM"
+			]
+		}
+	},
+	"version": 1
+}

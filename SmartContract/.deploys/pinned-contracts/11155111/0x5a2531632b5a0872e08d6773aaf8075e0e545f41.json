@@ -1,0 +1,67 @@
+{
+  "name": "ElectionVote",
+  "address": "0x5a2531632b5a0872e08d6773aaf8075e0e545f41",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "finishVoting",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "Message",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_hexSignature",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_hexModulus",
+          "type": "string"
+        }
+      ],
+      "name": "vote",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getVotes",
+      "outputs": [
+        {
+          "internalType": "string[]",
+          "name": "",
+          "type": "string[]"
+        },
+        {
+          "internalType": "int256[]",
+          "name": "",
+          "type": "int256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "filePath": "default_workspace/vote_v2.sol",
+  "pinnedAt": 1718650218433
+}
